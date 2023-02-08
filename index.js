@@ -28,7 +28,7 @@
  * при котором не нужно ничего сортировать.
  */
 
-const test = [3, 1, 7, 2, 11, 4, 12, 5, 0];
+const test = [3, 1, 7, 2, 11, 4, -6, 12, 5, 0];
 const testA = [2];
 
 /// Вариант 1 - Реализация алгоритма с созданием подмассива
@@ -86,8 +86,12 @@ console.log('res12:', quickSort(testA)); /// 2
 /// Это вариант с мутированием данных (НЕ лучший выбор)
 /// Подробное описание: https://www.guru99.com/quicksort-in-javascript.html
 
+const quickSortV2 = (array) => {
+  return quickSortHelper(array, 0, array.length - 1);
+};
+
 /// right - последний элемент
-const quickSortHelper = (array, left, right) => {
+function quickSortHelper(array, left, right) {
   if (array.length < 2) {
     /// в этом if базовый случай.
     return array;
@@ -106,12 +110,11 @@ const quickSortHelper = (array, left, right) => {
   }
 
   return array;
-};
+}
 
 function partition(array, left, right) {
   /// для опорного элемента берем серединку мужду left и right
-  const pivotIndex = Math.floor((left + right) / 2);
-  const pivot = array[pivotIndex];
+  const pivot = array[Math.floor((left + right) / 2)];
 
   /**
    * будем двигаться по левой границе пока индексы не совпадут
@@ -133,6 +136,8 @@ function partition(array, left, right) {
       right--;
     }
   }
+
+  return left;
 }
 
 function swap(array, i, j) {
@@ -141,9 +146,5 @@ function swap(array, i, j) {
   array[j] = temp;
 }
 
-const quickSortV2 = (array) => {
-  return quickSortHelper(array, 0, array.length - 1);
-};
-
-/// console.log(quickSortV2(test));
-/// console.log(quickSortV2(testA));
+console.log('res2:', quickSortV2(test));
+console.log('res22:', quickSortV2(testA)); /// 2
