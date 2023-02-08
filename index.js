@@ -4,14 +4,19 @@
  * 1. Выбрать опорный элемент
  * 2. Разделить массив на два подмассива: элементы больше и меньше опорного.
  * 3. Рекурсивно применить сортировку к двум подмассивам.
+ *
  * --- -- - -
- * Сложность QUICK SORT
- * В худшем случае будет О(n^2).
+ *
+ * Сложность QUICK SORT:
+ * в худшем случае (@#!) будет О(n^2).
  * Сложность будет зависит от того, какой элемент мы выберем в качестве опорного.
+ *
+ * В лучшем случае - O(logN * n), он же средний )))
  */
 
 /**
- * Выбираем опорный элемент из массива. Может быть любой.
+ * Выбираем опорный элемент из массива.
+ * Это может быть любой элемент, но лучше брать из середины (лучше для O-большого).
  *
  * Проходим по массиву и делим его на две части:
  * в первый массив кладем все элементы котор. меньше опорного,
@@ -39,7 +44,7 @@ const quickSort = (array) => {
   /// для опорного элемента берем элемент из середины массива
   const pivotIndex = Math.floor(array.length / 2);
 
-  /// pivot - опорный элемент
+  /// pivot - опорный элемент (в данном случае - середина)
   const pivot = array[pivotIndex];
 
   /// в less будем добавлять элементы, значение которых будут меньше значения опорного элемента pivot
@@ -49,7 +54,7 @@ const quickSort = (array) => {
   const greater = [];
 
   /// i = 1 - т.к. для опорного элемента pivot выбрали первый элемент массива (@#!)
-  // @# for (let i = 1; i < array.length; i++) {
+  // @#! for (let i = 1; i < array.length; i++) {
 
   for (let i = 0; i < array.length; i++) {
     /// если идем по @#!, то этот if не нужен
@@ -74,6 +79,71 @@ const quickSort = (array) => {
   return [...quickSort(less), pivot, ...quickSort(greater)];
 };
 
-console.log('res:', quickSort(test)); /// 0 1 2 3 4 5 7 11 12
+console.log('res1:', quickSort(test)); /// 0 1 2 3 4 5 7 11 12
+console.log('res12:', quickSort(testA)); /// 2
 
 /// Вариант 2 - Реализация алгоритма быстрой сортировки с перестановкой элементов
+/// Это вариант с мутированием данных (НЕ лучший выбор)
+/// Подробное описание: https://www.guru99.com/quicksort-in-javascript.html
+
+/// right - последний элемент
+const quickSortHelper = (array, left, right) => {
+  if (array.length < 2) {
+    /// в этом if базовый случай.
+    return array;
+  }
+
+  const index = partition(array, left, right);
+
+  if (left < index - 1) {
+    /// index - 1 - меняем правую границу
+    quickSortHelper(array, left, index - 1);
+  }
+
+  if (index < right) {
+    /// тут меняем правую границу
+    quickSortHelper(array, index, right);
+  }
+
+  return array;
+};
+
+function partition(array, left, right) {
+  /// для опорного элемента берем серединку мужду left и right
+  const pivotIndex = Math.floor((left + right) / 2);
+  const pivot = array[pivotIndex];
+
+  /**
+   * будем двигаться по левой границе пока индексы не совпадут
+   */
+
+  while (left <= right) {
+    while (array[left] < pivot) {
+      /// прибавляем левую границу
+      left++;
+    }
+
+    while (array[right] > pivot) {
+      right--;
+    }
+
+    if (left <= right) {
+      swap(array, left, right);
+      left++;
+      right--;
+    }
+  }
+}
+
+function swap(array, i, j) {
+  const temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+}
+
+const quickSortV2 = (array) => {
+  return quickSortHelper(array, 0, array.length - 1);
+};
+
+/// console.log(quickSortV2(test));
+/// console.log(quickSortV2(testA));
