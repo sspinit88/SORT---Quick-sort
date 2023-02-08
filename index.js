@@ -27,7 +27,7 @@ const testA = [2];
 const quickSort = (array) => {
   /// массив состоит из одного элемента
   /// это базовый случай
-  if (array.lenght < 2) {
+  if (array.length < 2) {
     return array;
   }
 
@@ -39,7 +39,7 @@ const quickSort = (array) => {
   const greater = [];
 
   /// i = 1 - т.к. для опорного элемента pivot выбрали первый элемент массива
-  for (let i = 1; i < array.lenght; i++) {
+  for (let i = 1; i < array.length; i++) {
     if (array[i] <= pivot) {
       less.push(array[i]);
     } else {
@@ -59,4 +59,4 @@ const quickSort = (array) => {
 
 /// Вариант 2 - Реализация алгоритма быстрой сортировки с перестановкой элементов
 
-/// console.log(quickSort(testA)); ///
+console.log(quickSort(test)); ///
