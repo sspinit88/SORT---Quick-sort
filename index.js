@@ -4,7 +4,10 @@
  * 1. Выбрать опорный элемент
  * 2. Разделить массив на два подмассива: элементы больше и меньше опорного.
  * 3. Рекурсивно применить сортировку к двум подмассивам.
- *
+ * --- -- - -
+ * Сложность QUICK SORT
+ * В худшем случае будет О(n^2).
+ * Сложность будет зависит от того, какой элемент мы выберем в качестве опорного.
  */
 
 /**
@@ -31,15 +34,29 @@ const quickSort = (array) => {
     return array;
   }
 
+  /// @#! const pivot = array[0]; - не лучший выбор, так как будет увеличиваться сложность O-большое
+
+  /// для опорного элемента берем элемент из середины массива
+  const pivotIndex = Math.floor(array.length / 2);
+
   /// pivot - опорный элемент
-  const pivot = array[0];
+  const pivot = array[pivotIndex];
+
   /// в less будем добавлять элементы, значение которых будут меньше значения опорного элемента pivot
   const less = [];
+
   /// в greater будем добавлять элементы, значение которых будут больше значения опорного элемента pivot
   const greater = [];
 
-  /// i = 1 - т.к. для опорного элемента pivot выбрали первый элемент массива
-  for (let i = 1; i < array.length; i++) {
+  /// i = 1 - т.к. для опорного элемента pivot выбрали первый элемент массива (@#!)
+  // @# for (let i = 1; i < array.length; i++) {
+
+  for (let i = 0; i < array.length; i++) {
+    /// если идем по @#!, то этот if не нужен
+    if (i === pivotIndex) {
+      continue;
+    }
+
     if (array[i] <= pivot) {
       less.push(array[i]);
     } else {
@@ -47,7 +64,7 @@ const quickSort = (array) => {
     }
   }
 
-  console.log(less, pivot, greater);
+  // console.log(less, pivot, greater);
 
   /**
    * Сначала завершится рекурсия по quickSort(less)
@@ -57,6 +74,6 @@ const quickSort = (array) => {
   return [...quickSort(less), pivot, ...quickSort(greater)];
 };
 
-/// Вариант 2 - Реализация алгоритма быстрой сортировки с перестановкой элементов
+console.log('res:', quickSort(test)); /// 0 1 2 3 4 5 7 11 12
 
-console.log(quickSort(test)); ///
+/// Вариант 2 - Реализация алгоритма быстрой сортировки с перестановкой элементов
